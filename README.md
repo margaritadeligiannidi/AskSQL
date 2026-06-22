@@ -47,7 +47,7 @@ database/database_schema.sql
 
 ---
 
-## Environment Variables
+## Configuration
 
 Create a new `.env` file based on `.env.example`.
 
@@ -57,6 +57,16 @@ Configure the following settings:
 - AI model API keys
 - SMTP configuration
 - Google OAuth credentials
+
+Example:
+
+```env
+DB_HOST=localhost
+DB_NAME=asksql
+DB_USER=your_db_user
+DB_PASS=your_db_password
+
+
 
 To use AI-powered query generation, you must create API keys for the supported LLM providers.
 
@@ -95,18 +105,6 @@ The server should have:
 
 ---
 
-## Configuration
-
-Create a `.env` file using `.env.example` as a template:
-
-```env
-DB_HOST=localhost
-DB_NAME=asksql
-DB_USER=your_db_user
-DB_PASS=your_db_password
-```
-
----
 
 ## Author
 
