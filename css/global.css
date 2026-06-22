@@ -1,0 +1,17 @@
+.tooltip-inner {
+    background-color: #111827 !important;
+    color: #fff;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #111827 !important;
+}
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #111827 !important;
+}
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: #111827 !important;
+}
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: #111827 !important;
+}

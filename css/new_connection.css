@@ -1,0 +1,181 @@
+
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc); 
+}
+
+/* CARD */
+.card {
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    transition: 0.2s;
+}
+
+
+
+/* INPUTS  */
+.form-control,
+.form-select {
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    transition: 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+    border-color: #3b82f6;
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: #93c5fd;
+}
+
+/* LABELS */
+.form-label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* BUTTON */
+.btn-primary {
+    border-radius: 10px;
+    background: #2563eb;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* PASSWORD ICON */
+.toggle-password {
+    color: #6c757d;
+}
+
+.toggle-password:hover {
+    color: #2563eb;
+}
+
+/* SSH BOX */
+#sshFields {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+/* NAVBAR  */
+.navbar a {
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.navbar a:hover {
+    opacity: 0.8;
+}
+
+/* MESSAGE */
+#messageBox {
+    min-height: 10px;
+}
+
+.connection-container{
+    max-width:800px;
+}
+
+/* NAVBAR BRAND */
+
+.navbar-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+}
+
+.navbar-logo{
+    font-size:1.4rem;
+    color:#fff;
+    line-height:1;
+}
+
+.navbar-title{
+    color:#fff;
+    font-size:1.8rem;
+    font-weight:700;
+    line-height:1;
+}
+
+@media (max-width:991px){
+
+    .connection-container{
+        margin-top:20px !important;
+        margin-bottom:20px !important;
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .navbar-collapse{
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:#212529;
+        padding:15px;
+        border-top:1px solid rgba(255,255,255,.08);
+        z-index:1000;
+    }
+
+    .navbar-nav{
+        gap:6px;
+    }
+
+    .navbar-nav .nav-link{
+        padding:12px;
+        border-radius:10px;
+    }
+
+    .mobile-user-info{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#fff;
+    padding:10px 12px;
+    margin-bottom:10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mobile-user-info i{
+    font-size:1.2rem;
+}
+
+}
+
+
+
+#sshFields{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:18px;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+}
+
+.user-meta small{
+    color:rgba(255,255,255,.65);
+    font-size:.75rem;
+}
+
+.user-meta span{
+    font-size:1rem;
+    font-weight:600;
+    color:#fff;
+}

@@ -1,0 +1,19 @@
+<script src="../js/auth.js"></script>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const token = params.get("token");
+
+localStorage.setItem("asksql_token", token);
+
+const payload = parseJwt(token);
+
+if (payload?.role === "admin") {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "connections.html";
+}
+
+</script>

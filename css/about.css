@@ -1,0 +1,165 @@
+/* ABOUT PAGE */
+body{
+    background:#eef2f7;
+}
+.about-card {
+    border-radius: 20px;
+    background: #fff;
+}
+
+.about-icon {
+    font-size: 5rem;
+    color: #0d6efd;
+}
+
+.about-title {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.about-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #475569;
+}
+
+.about-section-title {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.about-divider {
+    margin: 3rem 0;
+}
+
+h1{
+    font-size:3rem;
+    font-weight:800;
+    color:#111827;
+    letter-spacing:-1px;
+}
+
+h3{
+    color:#111827;
+    font-size:2rem;
+    font-weight:700;
+}
+p{
+    color:#475569;
+    line-height:1.9;
+    font-size:1.08rem;
+}
+
+.lead{
+    font-size:1.3rem;
+    color:#334155;
+    font-weight:400;
+}
+
+@media (max-width: 768px) {
+
+    .about-card {
+        padding: 2rem !important;
+    }
+
+    .about-icon {
+        font-size: 4rem;
+    }
+
+    .about-title {
+        font-size: 2rem;
+    }
+
+}
+
+.mobile-user-info{
+    display:none;
+}
+
+@media (max-width:991px){
+
+    .mobile-user-info{
+        display:flex;
+        align-items:center;
+        gap:10px;
+
+        color:#fff;
+
+        padding:12px;
+        margin-bottom:10px;
+
+        border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .mobile-user-info i{
+        font-size:1.3rem;
+    }
+
+    .mobile-user-info span{
+        font-size:1rem;
+        font-weight:600;
+    }
+
+}
+
+
+/* ίδιο στυλ με Profile */
+
+.card{
+    border:none;
+    border-radius:20px;
+    background:#ffffff;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.06),
+        0 2px 8px rgba(0,0,0,.04);
+
+    padding:50px !important;
+}
+.col-lg-8{
+    max-width:900px;
+}
+
+/* αφήνει να φαίνεται το page background */
+.container.py-5{
+    padding-top:40px !important;
+    padding-bottom:40px !important;
+}
+
+.ihu-link{
+    color:#2563eb;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.ihu-link:hover{
+    text-decoration:underline;
+}
+
+h1::after,
+h3::after{
+    content:"";
+    display:block;
+    width:50px;
+    height:4px;
+    background:#2563eb;
+    margin:12px auto 0;
+    border-radius:10px;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+}
+
+.user-meta small{
+    color:rgba(255,255,255,.65);
+    font-size:.75rem;
+}
+
+.user-meta span{
+    font-size:1rem;
+    font-weight:600;
+    color:#fff;
+}

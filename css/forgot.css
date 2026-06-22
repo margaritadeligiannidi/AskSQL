@@ -1,0 +1,84 @@
+.app-icon{
+    font-size:48px;
+    color:#3b82f6;
+}
+
+.page-bg{
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+}
+
+/* CARD */
+
+.custom-card{
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+    transition:.2s;
+}
+
+@media (hover:hover){
+
+    .custom-card:hover{
+        transform:translateY(-2px);
+    }
+
+}
+
+/* INPUT ICON */
+
+.input-icon{
+    top:50%;
+    left:12px;
+    transform:translateY(-50%);
+    color:#6c757d;
+}
+
+/* INPUTS */
+
+.form-control{
+    border-radius:10px;
+    padding:10px;
+    transition:.2s;
+}
+
+.form-control:focus{
+    box-shadow:0 0 0 2px rgba(59,130,246,.2);
+    border-color:#3b82f6;
+}
+
+@media (hover:hover){
+
+    .form-control:hover{
+        border-color:#93c5fd;
+    }
+
+}
+
+/* BUTTON */
+
+.btn-primary{
+    border-radius:10px;
+    transition:.2s;
+}
+
+@media (hover:hover){
+
+    .btn-primary:hover{
+        transform:translateY(-1px);
+    }
+
+}
+
+/* MOBILE */
+
+@media (max-width:576px){
+
+    .custom-card{
+        padding:24px !important;
+    }
+
+    .container{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+}

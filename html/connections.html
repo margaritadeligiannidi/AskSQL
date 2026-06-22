@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Connections | AskSQL</title>
+    <link rel="icon" type="image/svg+xml" href="../images/database-fill.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">  
+    <link rel="stylesheet" href="../css/connections.css">
+</head>
+<body class="d-flex flex-column min-vh-100 page-bg">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+<a class="navbar-brand d-flex align-items-center" href="#">
+    <i class="bi bi-database-fill navbar-logo"></i>
+    <span class="navbar-title">AskSQL</span>
+</a>
+    <!-- Hamburger -->
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
+
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse justify-content-end"
+         id="navbarMenu">
+
+    <div class="mobile-user-info d-lg-none">
+                <i class="bi bi-person-fill"></i>
+               <div class="user-meta">
+                 <small>Signed in as</small>
+                 <span id="navbarUsername">User</span>
+               </div>
+            </div>
+
+
+      <div class="navbar-nav align-items-lg-center gap-lg-3">
+
+        <a href="new_connection.html"
+           class="nav-link text-light">
+
+          <i class="bi bi-plus me-1"></i>
+          New Connection
+
+        </a>
+
+        <a href="#"
+           class="nav-link text-danger"
+           onclick="logout()">
+
+          <i class="bi bi-box-arrow-right me-1"></i>
+          Logout
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- SAVED CONNECTIONS  -->
+  <div class="container mt-5 mb-5 connections-container">
+
+    <div class="card p-4 border-0 bg-white">
+
+        <h5 class="mb-3 fw-semibold text-center">Saved Connections</h5>
+        
+        <div id="messageBox" class="mb-3"></div>
+
+        <div id="connectionsBox" class="row g-4"></div>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL -->
+<div class="modal fade" id="actionModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">
+          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+          Confirm Action
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- TEXT -->
+        <p id="modalBody" class="mb-2"></p>
+
+        <!-- RENAME INPUT -->
+        <div id="renameBox" class="d-none">
+          <input type="text" id="renameInput" class="form-control" placeholder="New name">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+        <button class="btn btn-primary" id="modalConfirmBtn">
+          <i class="bi bi-check-circle me-1"></i> Confirm
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="../js/auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', redirectToLoginIfUnauthenticated);
+</script>
+<script src="../js/connections.js"></script>
+
+</body>
+</html>

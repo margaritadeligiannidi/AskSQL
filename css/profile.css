@@ -1,0 +1,351 @@
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ===========================
+            CARD
+=========================== */
+
+.card {
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    transition: 0.2s;
+    padding: 40px !important;
+}
+
+.profile-container{
+    max-width: 700px;
+}
+
+@media (hover:hover){
+
+    .card:hover{
+        transform: translateY(-2px);
+    }
+
+}
+
+/* ===========================
+           INPUTS
+=========================== */
+
+.form-control{
+    height: 46px;
+    border-radius: 12px;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.form-control:focus{
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+    border-color: #3b82f6;
+}
+
+/* ===========================
+            LABELS
+=========================== */
+
+.form-label{
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* ===========================
+            BUTTON
+=========================== */
+
+.btn-primary{
+    height: 46px;
+    border-radius: 10px;
+    background: #2563eb;
+    border: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+/* ===========================
+            NAVBAR
+=========================== */
+
+.navbar a{
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+/* ===========================
+        PASSWORD ICON
+=========================== */
+
+.password-toggle{
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+/* ===========================
+          MESSAGE
+=========================== */
+
+#messageBox{
+    min-height: 10px;
+}
+
+/* ===========================
+        PROFILE INFO
+=========================== */
+
+.profile-row{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+.profile-label{
+    width: 120px;
+    min-width: 120px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.profile-value{
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: #374151;
+    word-break: break-word;
+}
+
+/* ===========================
+            FORM
+=========================== */
+
+#settingsForm{
+    margin-top: 30px;
+}
+
+/* ===========================
+          TITLES
+=========================== */
+
+.section-title{
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 24px;
+    position: relative;
+    color: #111827;
+}
+
+.password-title{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 35px;
+    margin-bottom: 24px;
+    position: relative;
+    color: #111827;
+}
+
+/* ===========================
+         UNDERLINE
+=========================== */
+
+.section-title::after,
+.password-title::after{
+    content: "";
+    width: 28px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+}
+
+/* ===========================
+          DIVIDER
+=========================== */
+
+.section-divider{
+    height: 1px;
+    background: #e5e7eb;
+    margin: 30px 0 10px 0;
+    border-radius: 20px;
+}
+
+/* ===========================
+        HOVER EFFECTS
+=========================== */
+
+@media (hover:hover){
+
+    .form-control:hover{
+        border-color: #93c5fd;
+    }
+
+    .btn-primary:hover{
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .navbar a:hover{
+        opacity: 0.8;
+    }
+
+    .password-toggle:hover{
+        color: #2563eb;
+    }
+
+}
+
+/* ===========================
+          TABLET
+=========================== */
+
+@media (max-width:991px){
+
+    .profile-container{
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card{
+        padding: 24px !important;
+    }
+
+    .section-title{
+        font-size: 20px;
+    }
+
+    .password-title{
+        font-size: 18px;
+    }
+
+}
+
+/* ===========================
+           MOBILE
+=========================== */
+
+@media (max-width:576px){
+
+    .profile-row{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        margin-bottom: 14px;
+    }
+
+    .profile-label{
+        width: auto;
+        min-width: auto;
+        font-size: 13px;
+    }
+
+    .profile-value{
+        padding-left: 2px;
+        font-size: 15px;
+    }
+
+}
+/* ---------- MOBILE NAVBAR ---------- */
+
+@media (max-width:991px){
+
+    .navbar-collapse{
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:#212529;
+        padding:15px;
+        border-top:1px solid rgba(255,255,255,.08);
+        z-index:1000;
+    }
+
+    .navbar-nav{
+        gap:6px;
+    }
+
+    .navbar-nav .nav-link{
+        padding:12px;
+        border-radius:10px;
+    }
+
+    .mobile-user-info{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#fff;
+    padding:10px 12px;
+    margin-bottom:10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mobile-user-info i{
+    font-size:1.2rem;
+}
+
+}
+
+.profile-label{
+    width: 130px;
+    min-width: 130px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.profile-value{
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* LOGO */
+
+.navbar-logo{
+    font-size:1.8rem;
+    color:#fff;
+    margin-right:8px;
+}
+
+.navbar-title{
+    color:#fff;
+    font-size:2rem;
+    font-weight:700;
+    line-height:1;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
+}
+
+.user-meta small{
+    color:rgba(255,255,255,.65);
+    font-size:.75rem;
+}
+
+.user-meta span{
+    font-size:1rem;
+    font-weight:600;
+    color:#fff;
+}

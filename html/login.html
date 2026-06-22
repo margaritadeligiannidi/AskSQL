@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Log in | AskSQL</title>
+    <link rel="icon" type="image/svg+xml" href="../images/database-fill.svg">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="../css/global.css">  
+    <link rel="stylesheet" href="../css/login.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+</head>
+<body class="d-flex align-items-center justify-content-center vh-100 page-bg">
+  
+    <div class="card app-card p-4 border-0 login-card">  
+       <div class="text-center mb-3">
+          <i class="bi bi-database-fill"
+           style="font-size: 48px; color: #3b82f6;"></i>
+       </div>
+    
+       <h4 class="text-center mb-4">Log in to AskSQL</h4>
+
+       <div id="messageBox"  class="mb-2"></div>
+         <br>
+
+         <form id="loginForm">
+
+         <div class="mb-3 text-start">
+              <label class="form-label">Username
+                <span class="text-danger">*</span>
+              </label>
+        
+              <div class="position-relative">
+                <i class="bi bi-person position-absolute"
+                   style="top: 50%; transform: translateY(-50%); left: 12px; color: #6c757d;"></i>
+        
+                  <input type="text"
+                       name="username"
+                       class="form-control ps-5"
+                       placeholder="Enter your username"
+                       required>
+               </div>
+          </div>
+
+          <div class="mb-3 text-start">
+              <label class="form-label">Password
+                <span class="text-danger">*</span>
+              </label>
+        
+              <div class="position-relative">
+                 <i class="bi bi-lock position-absolute"
+                    style="top: 50%; transform: translateY(-50%); left: 12px; color: #6c757d;"></i>
+        
+                  <input type="password"
+                       name="password"
+                       id="password"
+                       class="form-control ps-5 pe-5"
+                       placeholder="Enter your password"
+                       required>
+        
+                     <i class="bi bi-eye-slash position-absolute"
+                        id="togglePassword"
+                        data-bs-toggle="tooltip"
+                        title="Show / hide password"
+                        style="top: 50%; transform: translateY(-50%); right: 12px; cursor: pointer;">
+                      </i>
+              </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100" id="loginBtn">Log In</button>
+    </form>
+
+<div class="text-center mt-3">
+    <a href="../api/login_google.php"
+       class="google-login-link">
+        <img src="../images/google.svg"
+             alt="Google"
+             class="google-icon">
+        Sign in with Google
+    </a>
+</div>
+
+    <div class="text-center mt-3">
+        <p class="mb-1">
+            Do not have an account?
+            <a href="register.html">Register here</a>
+        </p>
+
+        <p class="mb-0">
+            Forgot password?
+            <a href="forgot.html">Click here</a>
+        </p>
+
+    </div>
+
+</div>
+
+
+<script src="../js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
+</script>
+<script src="../js/login.js"></script>
+
+</body>
+</html>
