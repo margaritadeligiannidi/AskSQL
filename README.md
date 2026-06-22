@@ -65,7 +65,7 @@ DB_HOST=localhost
 DB_NAME=asksql
 DB_USER=your_db_user
 DB_PASS=your_db_password
-
+```
 
 
 To use AI-powered query generation, you must create API keys for the supported LLM providers.
