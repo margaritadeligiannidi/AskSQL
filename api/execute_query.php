@@ -106,14 +106,6 @@ if (isDangerous($sql) && !$confirmed) {
 }
 try {
 
-    // AUTO LIMIT PROTECTION
-    if (
-        preg_match('/^\s*select\b/i', $sql) &&
-        !preg_match('/limit\s+\d+/i', $sql)
-    ) {
-        $sql = rtrim($sql, " ;") . " LIMIT 100";
-    }
-
     $stmt = $pdo->query($sql);
 
     // SELECT queries

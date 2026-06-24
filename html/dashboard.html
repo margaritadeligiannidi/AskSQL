@@ -163,11 +163,15 @@
                      <h5 class="fw-semibold">Query</h5>
 
 
-                        <select id="mode" class="form-select mb-2">
-                            <option value="sql">SQL</option>
-                            <option value="nl">Natural Language</option>
-                        </select>
+                       <select id="mode" class="form-select">
+                             <option value="sql" selected>
+                              SQL Query
+                            </option>
 
+                            <option value="nl">
+                              Natural Language
+                             </option>
+                              </select>
 <div class="query-input-wrapper">
 
     <!-- TEXTAREA -->
@@ -207,11 +211,26 @@
     </div>
 
 </div>
-                        <!-- RUN -->
-                        <button id="runBtn" class="btn btn-primary w-100 mb-2" onclick="handleQuery()">
-                           <i class="bi bi-play-fill me-1"></i> Run
-                        </button>
+<div class="d-flex gap-2 mt-2 align-items-center">
 
+                          <select
+                             id="modelProvider"
+                             class="form-select d-none"
+                            style="max-width:180px;"
+                              >
+                           <option value="openai">ChatGPT</option>
+                           <option value="deepseek">Deepseek</option>
+                           </select>
+
+                          <button
+                           id="runBtn"
+                           class="btn btn-primary flex-grow-1"
+                           onclick="handleQuery()"
+                           >
+                          <i class="bi bi-play-fill me-1"></i>
+                              Run
+                            </button>
+</div>
                   
 <div id="generatedBox">
 

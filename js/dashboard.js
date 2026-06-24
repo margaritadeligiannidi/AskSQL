@@ -1,4 +1,5 @@
 /* STATE  */ 
+let hasNextPage = false;
 let selectedDatabase = null; 
 let schemaDDL = ""; 
 let activeDBElement = null; 
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    document.getElementById("mode").value = "sql";
     updatePlaceholder();
 });
  
@@ -55,6 +57,8 @@ function updatePlaceholder() {
     const runBtnGenerated = document.getElementById("runGeneratedBtn");
     const voiceBtn = document.getElementById("voiceBtn");
     const voiceLang = document.getElementById("voiceLang");
+    const modelProvider =
+    document.getElementById("modelProvider");
     const wrapper = document.querySelector(".query-input-wrapper");
 
  if (mode === "sql") {
@@ -64,8 +68,11 @@ function updatePlaceholder() {
     btn.innerHTML = '<i class="bi bi-play-fill me-1"></i> Run';
 
     generated.classList.add("d-none");
+    generated.textContent = "";
+    lastGeneratedSQL = "";
     editBtn.classList.add("d-none");
     runBtnGenerated.classList.add("d-none");
+    modelProvider.classList.add("d-none");
 
     if (title) title.style.display = "none";
 
@@ -86,6 +93,7 @@ function updatePlaceholder() {
 
     editBtn.classList.remove("d-none");
     runBtnGenerated.classList.remove("d-none");
+    modelProvider.classList.remove("d-none");
 
     if (title) title.style.display = "block";
 
@@ -148,6 +156,7 @@ function clearUI() {
     lastQuery = "";
     lastGeneratedSQL = "";
     currentPage = 1;
+    hasNextPage = false; // <-- ΠΡΟΣΘΗΚΗ
 } 
 
 
@@ -331,6 +340,7 @@ async function handleQuery() {
 
     const input = document.getElementById("queryInput").value.trim(); 
     const mode = document.getElementById("mode").value; 
+    const provider = document.getElementById("modelProvider")?.value || "openai";
 
      if (!input) { 
          showErrorModal("Write something first !", "validation"); 
@@ -391,6 +401,7 @@ body: {
     }
 
        currentPage = 1;
+       hasNextPage = false;
        lastQuery = input;
        lastMode = mode;
             // αν δεν βρεθεί 
@@ -419,15 +430,13 @@ async function runSQL(
         // AUTO PAGINATION
         if (
             /^\s*select\b/i.test(sql) &&
-            !/limit\s+\d+/i.test(sql)
+            !/limit\b/i.test(sql)
         ) {
 
             const offset =
                 (currentPage - 1) * PAGE_SIZE;
 
-            sql =
-                sql.replace(/;?\s*$/, "") +
-                ` LIMIT ${PAGE_SIZE} OFFSET ${offset}`;
+            sql = sql.replace(/;?\s*$/, "") + ` LIMIT ${PAGE_SIZE + 1} OFFSET ${offset}`;
         }
 
         // EXECUTE QUERY
@@ -469,6 +478,17 @@ async function runSQL(
             );
 
         } else {
+
+if (data?.success && data.data) {
+
+    hasNextPage =
+        data.data.length > PAGE_SIZE;
+
+    if (hasNextPage) {
+        data.data =
+            data.data.slice(0, PAGE_SIZE);
+    }
+}
 
             renderResults(data);
 
@@ -538,68 +558,76 @@ body: {
 }
  
 /* RUN NL  */ 
-async function runNL(question) { 
-    
+async function runNL(question) {
+
     if (!schemaDDL || schemaDDL.length < 50) {
 
         const runBtn = document.getElementById("runBtn");
-    
+
         runBtn.innerHTML =
             '<i class="bi bi-stars me-1"></i> Ask AI';
-    
+
         runBtn.disabled = false;
-    
+
         showErrorModal("Schema not loaded yet", "validation");
-    
+
         return;
     }
 
+    const output = document.getElementById("generatedSQL");
 
+    output.innerHTML = `
+        <div class="d-flex align-items-center text-secondary">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            <span>Generating SQL...</span>
+        </div>
+    `;
 
-    const output = document.getElementById("generatedSQL"); 
-    output.innerHTML = ` <div class="d-flex align-items-center text-secondary">
-                         <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                         <span>Generating SQL...</span>
-                         </div>`;
+    try {
 
-    try { 
+        const provider =
+            document.getElementById("modelProvider")?.value || "openai";
 
- const data = await apiFetch("../api/nl2sql.php", {
+        console.log("SELECTED PROVIDER:", provider);
 
-    method: "POST",
+        const data = await apiFetch("../api/nl2sql.php", {
 
-    headers: {
-        "Content-Type": "application/json"
-    },
+            method: "POST",
 
-    body: {
-        question,
-        ddl: schemaDDL,
-        database: selectedDatabase
-    }
-});
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: {
+                question,
+                ddl: schemaDDL,
+                database: selectedDatabase,
+                provider
+            }
+        });
+
         if (data?.success) {
 
-            // SHOW ONLY
-            output.textContent = data.sql; 
+            output.textContent = data.sql;
             lastGeneratedSQL = data.sql;
 
-            
-        } else { 
+        } else {
 
-            output.textContent = "Error generating SQL"; 
+            output.textContent = "Error generating SQL";
+        }
 
-        } 
+    } catch (e) {
 
-    } catch { 
-
-        output.textContent = "Server error"; 
+        console.error(e);
+        output.textContent = "Server error";
 
     } finally {
 
         const runBtn = document.getElementById("runBtn");
 
-        runBtn.innerHTML = '<i class="bi bi-stars me-1"></i> Ask AI';
+        runBtn.innerHTML =
+            '<i class="bi bi-stars me-1"></i> Ask AI';
+
         runBtn.disabled = false;
     }
 }
@@ -967,11 +995,10 @@ function backToConnections() {
     const dbList = document.getElementById("dbList");
     if (dbList) dbList.innerHTML = "";
 
-    const resultsBox = document.getElementById("resultsBox");
-    if (resultsBox) resultsBox.innerHTML = "";
-
     const queryInput = document.getElementById("queryInput");
     if (queryInput) queryInput.value = "";
+
+    clearUI();
 
     // Navigate to connections page (token and connection_id remain in localStorage)
     window.location.href = "../html/connections.html";
@@ -1374,13 +1401,13 @@ function updatePagination(rowCount) {
 
     const box = document.getElementById("paginationBox");
 
-    if (!rowCount) {
-        box.classList.add("d-none");
-        return;
-    }
+   if (currentPage === 1 && rowCount === 0) {
+    box.classList.add("d-none");
+    return;
+}
 
     box.classList.remove("d-none");
     document.getElementById("pageIndicator").innerText =currentPage;
     document.getElementById("prevPageBtn").disabled = currentPage === 1;
-    document.getElementById("nextPageBtn").disabled = rowCount < PAGE_SIZE;
+    document.getElementById("nextPageBtn").disabled = !hasNextPage;
 }

@@ -1,3 +1,4 @@
+
 <?php
 
 ini_set('display_errors', 1);
@@ -14,11 +15,11 @@ $auth = require_auth();
 
 $user_id = (int)$auth['user_id'];
 
-/*   ENV */
+/* ENV */
 
 loadEnv(__DIR__ . "/../.env");
 
-/*  INPUT*/
+/* INPUT */
 
 $raw = file_get_contents("php://input");
 
@@ -36,7 +37,9 @@ $ddl = substr(
     8000
 );
 
-
+$provider = strtolower(
+    trim($data['provider'] ?? 'openai')
+);
 
 if (!$question || !$ddl) {
 
@@ -48,15 +51,41 @@ if (!$question || !$ddl) {
     exit;
 }
 
-/*API KEY */
+/* SELECT PROVIDER */
 
-$apiKey = $_ENV['OPENAI_API_KEY'] ?? null;
+switch ($provider) {
+
+    case "deepseek":
+
+        $apiKey = $_ENV['DEEPSEEK_API_KEY'] ?? '';
+
+        $url =
+            "https://api.deepseek.com/chat/completions";
+
+        $model =
+            "deepseek-chat";
+
+        break;
+
+    case "openai":
+    default:
+
+        $apiKey = $_ENV['OPENAI_API_KEY'] ?? '';
+
+        $url =
+            "https://api.openai.com/v1/chat/completions";
+
+        $model =
+            "gpt-4o-mini";
+
+        break;
+}
 
 if (!$apiKey) {
 
     echo json_encode([
         "success" => false,
-        "error" => "API key missing"
+        "error" => strtoupper($provider) . " API key missing"
     ]);
 
     exit;
@@ -86,17 +115,21 @@ $question
 
 ";
 
-/*  HELPERS */
+/* HELPERS */
 
-function callLLM($payload, $apiKey)
-{
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
+function callLLM(
+    string $url,
+    string $apiKey,
+    array $payload
+) {
+
+    $ch = curl_init($url);
 
     curl_setopt_array($ch, [
 
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
-        CURLOPT_TIMEOUT => 20,
+        CURLOPT_TIMEOUT => 30,
         CURLOPT_SSL_VERIFYPEER => true,
 
         CURLOPT_HTTPHEADER => [
@@ -104,36 +137,63 @@ function callLLM($payload, $apiKey)
             "Authorization: Bearer $apiKey"
         ],
 
-        CURLOPT_POSTFIELDS => json_encode($payload)
+        CURLOPT_POSTFIELDS =>
+            json_encode($payload)
     ]);
 
     $response = curl_exec($ch);
 
     if ($response === false) {
+
+        $err = curl_error($ch);
+
         curl_close($ch);
-        return null;
+
+        throw new Exception($err);
     }
 
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $httpCode =
+        curl_getinfo(
+            $ch,
+            CURLINFO_HTTP_CODE
+        );
 
     curl_close($ch);
 
-    if ($httpCode !== 200) {
-        return null;
+    if ($httpCode >= 400) {
+
+        throw new Exception(
+            "HTTP $httpCode : $response"
+        );
     }
 
-    return json_decode($response, true);
+    return json_decode(
+        $response,
+        true
+    );
 }
 
 function cleanSQL($sql)
 {
-    $sql = preg_replace('/```sql|```/i', '', $sql);
+    $sql = preg_replace(
+        '/```sql|```/i',
+        '',
+        $sql
+    );
 
     $sql = trim($sql);
 
-    $sql = preg_replace('/--.*(\n|$)/', '', $sql);
+    $sql = preg_replace(
+        '/--.*(\n|$)/',
+        '',
+        $sql
+    );
 
-    $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
+    $sql = preg_replace(
+        '/\/\*.*?\*\//s',
+        '',
+        $sql
+    );
 
     $sql = trim($sql);
 
@@ -152,7 +212,9 @@ function isDangerous($sql)
 
 function isVeryDangerous($sql)
 {
-    $sql = strtolower(trim($sql));
+    $sql = strtolower(
+        trim($sql)
+    );
 
     if (
         preg_match(
@@ -168,7 +230,10 @@ function isVeryDangerous($sql)
             '/update\s+\w+\s+set\s+.+$/',
             $sql
         ) &&
-        !str_contains($sql, 'where')
+        !str_contains(
+            $sql,
+            'where'
+        )
     ) {
         return true;
     }
@@ -176,13 +241,19 @@ function isVeryDangerous($sql)
     return false;
 }
 
-/*  LLM REQUEST */
+/* PAYLOAD */
 
 $payload = [
 
-    "model" => "gpt-4o-mini",
+    "model" => $model,
 
     "messages" => [
+
+        [
+            "role" => "system",
+            "content" =>
+                "You generate SQL only."
+        ],
 
         [
             "role" => "user",
@@ -193,98 +264,81 @@ $payload = [
     "temperature" => 0
 ];
 
-/* FIRST TRY */
+try {
 
-$result = callLLM($payload, $apiKey);
-
-if (
-    !$result ||
-    !isset($result['choices'][0]['message']['content'])
-) {
-
-    echo json_encode([
-
-        "success" => false,
-
-        "error" => "LLM request failed"
-
-    ]);
-
-    exit;
-}
-
-/* CLEAN SQL */
-
-$sql = $result['choices'][0]['message']['content'];
-
-$sql = cleanSQL($sql);
-
-/* RETRY IF INVALID*/
-
-if (
-    !$sql ||
-    strlen($sql) < 10 ||
-    substr_count($sql, ';') > 0
-) {
-
-    $payload['messages'][0]['content'] .=
-        "\n\nIMPORTANT: Return ONLY ONE valid SQL query. No text.";
-
-    $retryResult = callLLM($payload, $apiKey);
+    $result = callLLM(
+        $url,
+        $apiKey,
+        $payload
+    );
 
     if (
-        $retryResult &&
-        isset($retryResult['choices'][0]['message']['content'])
+        !$result ||
+        !isset(
+            $result['choices'][0]['message']['content']
+        )
     ) {
 
-        $sql = $retryResult['choices'][0]['message']['content'];
+        echo json_encode([
+            "success" => false,
+            "error" => "LLM request failed"
+        ]);
 
-        $sql = cleanSQL($sql);
+        exit;
     }
-}
 
-/* FINAL VALIDATION*/
+    $sql =
+        $result['choices'][0]['message']['content'];
 
-if (!$sql) {
+    $sql = cleanSQL($sql);
+
+    if (
+        !$sql ||
+        strlen($sql) < 5
+    ) {
+
+        echo json_encode([
+            "success" => false,
+            "error" => "Empty SQL"
+        ]);
+
+        exit;
+    }
+
+    if (
+        substr_count($sql, ';') > 0
+    ) {
+
+        echo json_encode([
+            "success" => false,
+            "error" =>
+                "Multiple queries are not allowed"
+        ]);
+
+        exit;
+    }
+
+    echo json_encode([
+
+        "success" => true,
+
+        "sql" => $sql,
+
+        "dangerous" =>
+            isDangerous($sql),
+
+        "veryDangerous" =>
+            isVeryDangerous($sql)
+    ]);
+
+} catch (Throwable $e) {
 
     echo json_encode([
 
         "success" => false,
 
-        "error" => "Empty SQL"
-
+        "error" =>
+            $e->getMessage()
     ]);
-
-    exit;
 }
 
-/*  BLOCK MULTI QUERY */
-
-if (substr_count($sql, ';') > 0) {
-
-    echo json_encode([
-
-        "success" => false,
-
-        "error" => "Multiple queries are not allowed"
-
-    ]);
-
-    exit;
-}
-
-/*  RESPONSE*/
-
-echo json_encode([
-
-    "success" => true,
-
-    "sql" => $sql,
-
-    "dangerous" => isDangerous($sql) ? true : false,
-
-    "veryDangerous" => isVeryDangerous($sql) ? true : false
-
-]);
-
-exit;
