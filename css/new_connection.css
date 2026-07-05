@@ -38,17 +38,42 @@ body {
     font-size: 14px;
 }
 
+
 /* BUTTON */
 .btn-primary {
+    position: relative;
+    overflow: hidden;
+
     border-radius: 10px;
     background: #2563eb;
     border: none;
-    transition: 0.2s;
+    transition: all .2s ease;
 }
 
 .btn-primary:hover {
     background: #1d4ed8;
     transform: translateY(-1px);
+}
+
+.btn-primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: left .6s ease;
+}
+
+.btn-primary:hover::before {
+    left: 150%;
 }
 
 /* PASSWORD ICON */
@@ -67,16 +92,6 @@ body {
     padding: 15px;
 }
 
-/* NAVBAR  */
-.navbar a {
-    font-weight: 500;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.navbar a:hover {
-    opacity: 0.8;
-}
 
 /* MESSAGE */
 #messageBox {
@@ -84,29 +99,8 @@ body {
 }
 
 .connection-container{
-    max-width:800px;
-}
-
-/* NAVBAR BRAND */
-
-.navbar-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-}
-
-.navbar-logo{
-    font-size:1.4rem;
-    color:#fff;
-    line-height:1;
-}
-
-.navbar-title{
-    color:#fff;
-    font-size:1.8rem;
-    font-weight:700;
-    line-height:1;
+    max-width:650px;
+    margin:50px auto;
 }
 
 @media (max-width:991px){
@@ -117,40 +111,6 @@ body {
         padding-left:10px;
         padding-right:10px;
     }
-
-    .navbar-collapse{
-        position:absolute;
-        top:100%;
-        left:0;
-        right:0;
-        background:#212529;
-        padding:15px;
-        border-top:1px solid rgba(255,255,255,.08);
-        z-index:1000;
-    }
-
-    .navbar-nav{
-        gap:6px;
-    }
-
-    .navbar-nav .nav-link{
-        padding:12px;
-        border-radius:10px;
-    }
-
-    .mobile-user-info{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#fff;
-    padding:10px 12px;
-    margin-bottom:10px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.mobile-user-info i{
-    font-size:1.2rem;
-}
 
 }
 
@@ -163,19 +123,11 @@ body {
     padding:18px;
 }
 
-.user-meta{
-    display:flex;
-    flex-direction:column;
-    line-height:1.2;
-}
 
-.user-meta small{
-    color:rgba(255,255,255,.65);
-    font-size:.75rem;
-}
-
-.user-meta span{
-    font-size:1rem;
+.connect-btn{
+    min-width:240px;
+    height:46px;
+    padding:0 30px;
     font-weight:600;
-    color:#fff;
+    border-radius:12px;
 }

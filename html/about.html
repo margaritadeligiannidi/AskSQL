@@ -11,6 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+
+    <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/about.css">
 </head>
@@ -21,7 +23,6 @@
   <div class="container">
 
     <a class="navbar-brand d-flex align-items-center" href="connections.html">
-      <i class="bi bi-database-fill navbar-logo"></i>
       <span class="navbar-title">AskSQL</span>
     </a>
 
@@ -49,21 +50,53 @@
 
 
       <div class="navbar-nav align-items-lg-center gap-lg-3">
+                <a href="connections.html"
+                   class="nav-link text-light">
+                    <i class="bi bi-database-fill-gear me-1"></i>
+                    Connections
+                </a>
 
-        <a href="dashboard.html"
-           class="nav-link">
-          <i class="bi bi-arrow-left me-1"></i>
-          Back
-        </a>
+                  <a
+                    class="nav-link nav-link-about"
+                    href="dashboard.html">
+                   <i class="bi bi-house me-1"></i>
+                    Dashboard
+                </a>
 
-        <a href="#"
-           class="nav-link text-danger"
-           onclick="logout()">
+                <a
+                    class="nav-link"
+                    href="#"
+                    onclick="openProfile()">
 
-          <i class="bi bi-box-arrow-right me-1"></i>
-          Logout
+                    <i class="bi bi-person-circle me-1"></i>
+                    Profile
+                </a>
 
-        </a>
+                <a
+                    class="nav-link nav-link-about"
+                    href="about.html">
+
+                    <i class="bi bi-info-circle me-1"></i>
+                    About
+                </a>
+
+                <a
+                    class="nav-link text-warning"
+                    href="#"
+                    onclick="openSUSModal()">
+
+                    <i class="bi bi-star-fill me-1"></i>
+                    Rate Us
+                </a>
+
+                <a
+                    class="nav-link text-danger"
+                    href="#"
+                    onclick="logout()">
+
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Logout
+                </a>
 
       </div>
 
@@ -86,7 +119,7 @@
                     <i class="bi bi-database-fill display-1 text-primary"></i>
 
                     <h1 class="fw-bold mt-3">
-                        What is AskSQL?
+                        About AskSQL
                     </h1>
 
                 </div>
@@ -105,6 +138,56 @@
                     query execution, result visualization, CSV export, and
                     voice-based query input.
                 </p>
+
+                <div class="section-divider"></div>
+
+<h3 class="section-title">
+ Key Features
+</h3>
+
+<div class="features-grid">
+
+    <div class="feature-item">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span>Natural Language to SQL</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-code-slash"></i>
+        <span>SQL Query Execution</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-cpu-fill"></i>
+        <span>Multiple AI Providers</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-hdd-network-fill"></i>
+        <span>Connection Management</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-table"></i>
+        <span>Result Visualization</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-file-earmark-arrow-down-fill"></i>
+        <span>CSV Export</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-mic-fill"></i>
+        <span>Voice Input</span>
+    </div>
+
+    <div class="feature-item">
+        <i class="bi bi-shield-lock-fill"></i>
+        <span>Secure Authentication</span>
+    </div>
+
+</div>
 
                 <hr class="my-5">
 

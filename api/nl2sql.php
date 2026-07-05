@@ -202,6 +202,10 @@ function cleanSQL($sql)
     return trim($sql);
 }
 
+
+
+
+
 function isDangerous($sql)
 {
     return preg_match(
@@ -272,6 +276,25 @@ try {
         $payload
     );
 
+    $usage = $result["usage"] ?? $result["usageMetadata"] ?? [];
+
+$promptTokens =
+    $usage["prompt_tokens"]
+    ?? $usage["promptTokenCount"]
+    ?? 0;
+
+$completionTokens =
+    $usage["completion_tokens"]
+    ?? $usage["candidatesTokenCount"]
+    ?? 0;
+
+$totalTokens =
+    $usage["total_tokens"]
+    ?? $usage["totalTokenCount"]
+    ?? ($promptTokens + $completionTokens);
+
+  
+
     if (
         !$result ||
         !isset(
@@ -318,18 +341,29 @@ try {
         exit;
     }
 
-    echo json_encode([
+   echo json_encode([
 
-        "success" => true,
+    "success" => true,
 
-        "sql" => $sql,
+    "provider" => $provider,
 
-        "dangerous" =>
-            isDangerous($sql),
+    "model" => $model,
 
-        "veryDangerous" =>
-            isVeryDangerous($sql)
-    ]);
+    "sql" => $sql,
+
+    "dangerous" => isDangerous($sql),
+
+    "veryDangerous" => isVeryDangerous($sql),
+
+    "metrics" => [
+
+        "prompt_tokens" => $promptTokens,
+
+        "completion_tokens" => $completionTokens,
+
+        "total_tokens" => $totalTokens
+    ]
+]);
 
 } catch (Throwable $e) {
 

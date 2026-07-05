@@ -128,7 +128,7 @@ if (!$stmt->execute()) {
 }
 
 /* SEND EMAIL */
-$verify_link = "https://nireas.iee.ihu.gr/asksql/html/verify.php?token=" . $verify_token;
+$verify_link = "https://nireas.iee.ihu.gr/asksql/html/verify.html?token=" . $verify_token;
 
 $mail = new PHPMailer(true);
 

@@ -1,55 +1,4 @@
-.card {
-    transition: all 0.2s ease;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-}
-
-.card:hover {
-    transform: translateY(-3px);
-}
-
-.navbar a {
-    font-weight: 500;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.navbar a:hover {
-    opacity: 0.8;
-}
-
-.link-action {
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.link-action:hover {
-    text-decoration: underline;
-}
-
-#connectionsBox {
-    justify-content: center;
-}
-
-#messageBox {
-    min-height: 10px;
-}
-
-.modal-content {
-    border-radius: 14px;
-}
-
-.modal-header,
-.modal-footer {
-    border: none;
-}
-.page-bg {
-    background: linear-gradient(135deg, #eef2ff, #f8fafc); 
-}
-.connections-container {
-    max-width: 1200px;
-}
-
+/* GENERAL  */
 
 html,
 body{
@@ -60,127 +9,248 @@ body{
     background:linear-gradient(135deg,#eef2ff,#f8fafc);
 }
 
-/* NAVBAR */
-
-.navbar-brand{
-    font-size:2rem;
-    font-weight:700;
-}
-.navbar-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.navbar-logo{
-    font-size:1.4rem;
-    color:#fff;
-    line-height:1;
-}
-
-.navbar-title{
-    color:#fff;
-    font-size:1.8rem;
-    font-weight:700;
-    line-height:1;
-}
-
-.navbar .nav-link{
-    font-weight:500;
-    transition:.18s;
-}
-
-.navbar .nav-link:hover{
-    opacity:.8;
-}
-
-/* MAIN CARD */
+/*  PAGE  */
 
 .connections-container{
-    max-width:1050px;
+    max-width:1000px;
 }
 
-.connections-container > .card{
+.connections-card{
+    border:none;
+    border-radius:22px;
+    padding:2rem;
+    box-shadow:0 12px 35px rgba(15,23,42,.08);
+}
+
+.page-header h2{
+    font-weight:700;
+    color:#1f2937;
+    margin-bottom:.35rem;
+}
+
+.page-header p{
+    color:#6b7280;
+    font-size:.95rem;
+}
+
+/*  CONNECTION GRID */
+
+#connectionsBox{
+    justify-content:center;
+}
+
+#connectionsBox .col-lg-4{
+    display:flex;
+    justify-content:center;
+}
+
+/* CONNECTION CARD  */
+
+.connection-card{
+    width:100%;
+    max-width:320px;
     border:none;
     border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,.06);
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
+    transition:.25s ease;
+    overflow:hidden;
 }
 
-/* MOBILE */
+.connection-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.connection-card .card-body{
+    padding:1rem;
+}
+
+/*  HEADER  */
+
+.connection-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.connection-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    background:#eef4ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.connection-icon img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+}
+
+.card-title{
+    font-size:1.15rem;
+    font-weight:700;
+    margin-bottom:2px;
+}
+
+.badge{
+    font-size:.72rem;
+    font-weight:600;
+}
+
+/* DETAILS  */
+
+.connection-card hr{
+    margin:14px 0;
+}
+
+.connection-details{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.detail-row{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+}
+
+.detail-row i{
+    color:#6b7280;
+    font-size:1rem;
+    margin-top:2px;
+}
+
+.detail-row small{
+    display:block;
+    color:#6b7280;
+    font-size:.78rem;
+    margin-bottom:2px;
+}
+
+.detail-row strong{
+    display:block;
+    color:#111827;
+    font-size:.93rem;
+    font-weight:600;
+    word-break:break-word;
+}
+
+/*  BUTTONS  */
+
+.action-links{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid #ececec;
+}
+
+.action-link{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    cursor:pointer;
+    font-size:.88rem;
+    font-weight:600;
+    transition:.2s ease;
+    user-select:none;
+}
+
+.connect-btn{
+    color:#198754;
+}
+
+.rename-btn{
+    color:#2563eb;
+}
+
+.delete-btn{
+    color:#dc3545;
+}
+
+.action-link:hover{
+    opacity:.75;
+    text-decoration:underline;
+}
+/* ALERT */
+
+#messageBox{
+    min-height:10px;
+}
+
+/*  MODAL */
+
+.modal-content{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 18px 45px rgba(0,0,0,.15);
+}
+
+.modal-header,
+.modal-footer{
+    border:none;
+}
+
+
+/* RESPONSIVE  */
 
 @media (max-width:991px){
 
     .connections-container{
-        margin-top:15px !important;
-        margin-bottom:15px !important;
-        padding:0 10px;
+        margin-top:20px !important;
+        margin-bottom:20px !important;
+        padding:0 12px;
     }
 
-    .connections-container > .card{
-        padding:20px !important;
+    .connections-card{
+        padding:1.5rem;
     }
 
-    .navbar-collapse{
-        position:absolute;
-        top:100%;
-        left:0;
-        right:0;
-        background:#212529;
-        padding:15px;
-        border-top:1px solid rgba(255,255,255,.08);
-        z-index:1000;
+
+    .connection-card{
+        max-width:340px;
     }
-
-    .navbar-nav{
-        gap:6px;
-    }
-
-    .navbar-nav .nav-link{
-        padding:12px;
-        border-radius:10px;
-    }
-
-    .mobile-user-info{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#fff;
-    padding:12px;
-    margin-bottom:8px;
-    border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.mobile-user-info i{
-    font-size:1.2rem;
-}
 
 }
 
 @media (max-width:576px){
 
-    .connections-container > .card{
-        padding:16px !important;
+    .connections-card{
+        padding:1.2rem;
     }
 
-    h5{
-        font-size:1.15rem;
+    .page-header h2{
+        font-size:1.55rem;
+    }
+
+    .page-header p{
+        font-size:.9rem;
+    }
+
+    .connection-card{
+        max-width:100%;
+    }
+
+    .connection-card .card-body{
+        padding:1rem;
+    }
+
+    .detail-row strong{
+        font-size:.88rem;
+    }
+
+    .connection-card .btn{
+        font-size:.85rem;
     }
 
 }
 
-.user-meta{
-    display:flex;
-    flex-direction:column;
-    line-height:1.2;
-}
-
-.user-meta small{
-    color:rgba(255,255,255,.65);
-    font-size:.75rem;
-}
-
-.user-meta span{
-    font-size:1rem;
-    font-weight:600;
-    color:#fff;
+.connect-btn{
+    color:#198754;
 }

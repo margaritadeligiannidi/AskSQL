@@ -1252,7 +1252,7 @@ seen.add(normalized);
 
         const li = document.createElement("li"); 
 
-        li.className = "list-group-item small"; 
+       li.className = "list-group-item small recent-query-item";
 
         li.innerHTML = `<div>${text}</div>`; 
 

@@ -21,7 +21,7 @@ document.getElementById("forgotForm").addEventListener("submit", async function(
         if (data.success) {
 
             showMessage(
-                data.message || "If the email exists, a reset link was sent.",
+                data.message || "If an account with this email exists, a password reset link has been sent.",
                 "success"
             );
 

@@ -17,9 +17,13 @@ async function loadConnections() {
 
     if (!data.connections || data.connections.length === 0) {
         box.innerHTML = `
-    <div class="text-center text-muted">
-        No saved connections yet.
-    </div>
+   <div class="text-center py-5 text-muted">
+    <i class="bi bi-database-x fs-1 d-block mb-3"></i>
+    <h5>No saved connections</h5>
+    <p class="mb-0">
+        Create your first database connection.
+    </p>
+</div>
 `;
         return;
     }
@@ -30,36 +34,97 @@ async function loadConnections() {
 
         const col = document.createElement("div");
         col.className = "col-12 col-sm-6 col-lg-4";
+
+        const dbIcon =
+             conn.db_type === "mysql"
+              ? "../images/mysql.png"
+              : "../images/postgress.png";
+
     
-        col.innerHTML = `
-    <div class="card h-100" style="max-width:350px; width:100%;">
-        <div class="card-body d-flex flex-column">
+      col.innerHTML = `
+<div class="card h-100 connection-card">
 
-            <h5 class="card-title mb-1">${conn.name || "Unnamed"}</h5>
-            <p class="text-muted small mb-3">${conn.db_type}</p>
+    <div class="card-body d-flex flex-column">
 
-            <p class="mb-1 small"><b>Host:</b> ${conn.host}:${conn.port}</p>
-            <p class="mb-1 small"><b>User:</b> ${conn.db_username}</p>
-            <p class="mb-3 small"><b>DB:</b> ${conn.db_name}</p>
-            
-            <div class="mt-auto d-flex justify-content-between small">
+        <div class="connection-header">
 
-                <span class="link-action text-success connect-btn">
-                    <i class="bi bi-plug-fill me-1"></i> Connect
-                </span>
+            <div class="connection-icon">
+              <img src="${dbIcon}" alt="${conn.db_type}">
+            </div>
 
-                <span class="link-action text-primary rename-btn">
-                    <i class="bi bi-pencil-square me-1"></i> Rename
-                </span>
+            <div class="flex-grow-1">
 
-                <span class="link-action text-danger delete-btn">
-                    <i class="bi bi-trash me-1"></i> Delete
+                <h5 class="card-title mb-1">
+                    ${conn.name || "Unnamed Connection"}
+                </h5>
+
+                <span class="badge bg-primary-subtle text-primary">
+                    ${conn.db_type}
                 </span>
 
             </div>
 
         </div>
+
+        <hr>
+
+        <div class="connection-details">
+
+            <div class="detail-row">
+                <i class="bi bi-globe"></i>
+                <div>
+                    <small>Host</small>
+                    <strong>${conn.host}:${conn.port}</strong>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <i class="bi bi-person-fill"></i>
+                <div>
+                    <small>User</small>
+                    <strong>${conn.db_username}</strong>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <i class="bi bi-hdd-stack-fill"></i>
+                <div>
+                    <small>Database</small>
+                    <strong>${conn.db_name}</strong>
+                </div>
+            </div>
+
+        </div>
+
+       <div class="mt-auto pt-4">
+<div class="mt-auto pt-3">
+
+    <div class="action-links">
+
+        <span class="action-link connect-btn">
+            <i class="bi bi-plug-fill"></i>
+            Connect
+        </span>
+
+        <span class="action-link rename-btn">
+            <i class="bi bi-pencil-square"></i>
+            Rename
+        </span>
+
+        <span class="action-link delete-btn">
+            <i class="bi bi-trash"></i>
+            Delete
+        </span>
+
     </div>
+
+</div>
+
+</div>
+
+    </div>
+
+</div>
 `;
     
         col.querySelector(".connect-btn").onclick = () => reconnect(conn.id);
@@ -226,3 +291,16 @@ document.getElementById("modalConfirmBtn").onclick = async () => {
 document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
     new bootstrap.Tooltip(el);
   });
+
+
+  function openSUSModal() { 
+
+    window.open("https://docs.google.com/forms/d/e/1FAIpQLScN5oNctxkFbEYmKcboImZsmEgrApA8KCT_VX4_fRTDN48WMw/viewform?usp=publish-editor", "_blank"); 
+
+} 
+
+
+//PROFILE
+function openProfile() { 
+    window.location.href = "../html/profile.html"; 
+} 

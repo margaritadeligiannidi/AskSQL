@@ -21,3 +21,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 });
+
+
+  function openSUSModal() { 
+
+    window.open("https://docs.google.com/forms/d/e/1FAIpQLScN5oNctxkFbEYmKcboImZsmEgrApA8KCT_VX4_fRTDN48WMw/viewform?usp=publish-editor", "_blank"); 
+
+} 
+
+
+//PROFILE
+function openProfile() { 
+    window.location.href = "../html/profile.html"; 
+} 
+
+
