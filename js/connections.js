@@ -38,7 +38,7 @@ async function loadConnections() {
         const dbIcon =
              conn.db_type === "mysql"
               ? "../images/mysql.png"
-              : "../images/postgress.png";
+              : "../images/postgres.png";
 
     
       col.innerHTML = `
