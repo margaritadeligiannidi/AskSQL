@@ -51,33 +51,22 @@ if (!$question || !$ddl) {
     exit;
 }
 
-/* SELECT PROVIDER */
-
+// SELECT PROVIDER 
 switch ($provider) {
 
     case "deepseek":
 
         $apiKey = $_ENV['DEEPSEEK_API_KEY'] ?? '';
-
-        $url =
-            "https://api.deepseek.com/chat/completions";
-
-        $model =
-            "deepseek-chat";
-
+        $url = "https://api.deepseek.com/chat/completions";
+        $model =  "deepseek-chat";
         break;
 
     case "openai":
     default:
 
         $apiKey = $_ENV['OPENAI_API_KEY'] ?? '';
-
-        $url =
-            "https://api.openai.com/v1/chat/completions";
-
-        $model =
-            "gpt-4o-mini";
-
+        $url = "https://api.openai.com/v1/chat/completions";
+        $model = "gpt-4o-mini";
         break;
 }
 
@@ -245,12 +234,10 @@ function isVeryDangerous($sql)
     return false;
 }
 
-/* PAYLOAD */
-
+// PAYLOAD 
 $payload = [
 
     "model" => $model,
-
     "messages" => [
 
         [

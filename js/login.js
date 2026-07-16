@@ -11,18 +11,18 @@ form.addEventListener("submit", async function(e) {
     try {
 
         document.getElementById("messageBox").innerHTML = "";
-      const res = await fetch("../api/login.php", {
-    method: "POST",
+    const res = await fetch("../api/login.php", {
+       method: "POST",
 
-    headers: {
+       headers: {
         "Content-Type": "application/json"
-    },
+       },
 
-    body: JSON.stringify({
-        username: form.username.value,
-        password: form.password.value
-    })
-});
+       body: JSON.stringify({
+         username: form.username.value,
+         password: form.password.value
+        })
+    });
         if (!res.ok) throw new Error("Server error");
 
         const data = await res.json();

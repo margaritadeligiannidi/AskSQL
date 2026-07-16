@@ -1,13 +1,22 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // buffer
 ob_start();
 
 require_once "db.php";
+require_once "config.php";
+$env = __DIR__ . "/../../.env";
+if (!file_exists($env)){
+die("env file  not found" .$env);
+}
+loadEnv($env);
+var_dump($_ENV);
+exit;
+loadEnv(__DIR__ . "/../.env");
 
 // PHPMailer
 require_once __DIR__ . "/../libs/PHPMailer-master/src/PHPMailer.php";
@@ -129,6 +138,25 @@ if (!$stmt->execute()) {
 
 /* SEND EMAIL */
 $verify_link = "https://nireas.iee.ihu.gr/asksql/html/verify.html?token=" . $verify_token;
+
+if(empty($_ENV['SMT_USER']) || empty($_ENV['STM_PASS'])){
+ob_clean();
+echo json_encode([
+"error" => "SMTP ENV NOT LOADED",
+"smtp_user" => $_ENV['SMTP_USER']??null,
+"smtp_pass_exists" => isset($_ENV['SMTP_PASS'])
+]);
+exit;
+}
+
+
+
+
+
+
+
+
+
 
 $mail = new PHPMailer(true);
 

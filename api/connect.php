@@ -93,7 +93,7 @@ if ($connection_id) {
 
     /* NORMAL CONNECT */
 
-   $type     = $data['type'] ?? null;
+$type     = $data['type'] ?? null;
 $host     = $data['host'] ?? null;
 $port     = $data['port'] ?? null;
 $username = $data['username'] ?? null;
@@ -152,8 +152,7 @@ if ($useSSH) {
 }
 
 
-/* SSH TUNNEL */
-
+// SSH TUNNEL 
 if ((int)$useSSH === 1) {
 
     $localPort = rand(20000, 65000);
@@ -165,13 +164,11 @@ if ((int)$useSSH === 1) {
 
     $ssh_host = escapeshellarg($ssh_host_input);
     $ssh_user = escapeshellarg($ssh_user_input);
-
     $escaped_host = escapeshellarg($host);
 
     if (!empty($ssh_pass_input)) {
 
         $ssh_pass = escapeshellarg($ssh_pass_input);
-
         $cmd = "sshpass -p $ssh_pass ssh "
              . "-o UserKnownHostsFile=/dev/null "
              . "-o StrictHostKeyChecking=no "
@@ -218,13 +215,10 @@ if ((int)$useSSH === 1) {
 }
 
 
-/* CONNECT PDO */
-
+// CONNECT PDO 
 try {
-
-
     if ($type === 'mysql') {
-
+            // If database is empty, connect without specifying a database
         if (!empty($database)) {
 
             $dsn = "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4";
@@ -260,8 +254,7 @@ try {
 } catch (Exception $e) {
 
     echo json_encode([
-        "error" => "Connection failed",
-        "debug" => $e->getMessage()
+        "error" => "Connection failed"
     ]);
 
     exit;
