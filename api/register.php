@@ -3,13 +3,15 @@ header('Content-Type: application/json; charset=utf-8');
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+echo "start";
+exit;
 // buffer
 ob_start();
 
 require_once "db.php";
 require_once "config.php";
-$env = __DIR__ . "/../../.env";
+die("<pre>reached rigister.php<pre>");
+$env = __DIR__ . "/../.env";
 if (!file_exists($env)){
 die("env file  not found" .$env);
 }
@@ -95,7 +97,7 @@ $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
 if (!$stmt) {
     ob_clean();
     echo json_encode(["error" => "Prepare failed", "debug" => $conn->error]);
-    exit;
+    exit;		
 }
 
 $stmt->bind_param("ss", $username, $email);
@@ -139,7 +141,7 @@ if (!$stmt->execute()) {
 /* SEND EMAIL */
 $verify_link = "https://nireas.iee.ihu.gr/asksql/html/verify.html?token=" . $verify_token;
 
-if(empty($_ENV['SMT_USER']) || empty($_ENV['STM_PASS'])){
+if(empty($_ENV['SMTP_USER']) || empty($_ENV['SMTP_PASS'])){
 ob_clean();
 echo json_encode([
 "error" => "SMTP ENV NOT LOADED",
