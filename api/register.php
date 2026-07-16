@@ -3,21 +3,12 @@ header('Content-Type: application/json; charset=utf-8');
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-echo "start";
-exit;
-// buffer
+
 ob_start();
 
 require_once "db.php";
 require_once "config.php";
-die("<pre>reached rigister.php<pre>");
-$env = __DIR__ . "/../.env";
-if (!file_exists($env)){
-die("env file  not found" .$env);
-}
-loadEnv($env);
-var_dump($_ENV);
-exit;
+
 loadEnv(__DIR__ . "/../.env");
 
 // PHPMailer
@@ -28,7 +19,7 @@ require_once __DIR__ . "/../libs/PHPMailer-master/src/Exception.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-/*  DB CONNECTION  */
+/* DATABASE */
 $conn = getAppDB();
 
 if (!$conn) {
@@ -37,11 +28,8 @@ if (!$conn) {
     exit;
 }
 
-/*  INPUT */
-$data = json_decode(
-    file_get_contents("php://input"),
-    true
-);
+/* INPUT */
+$data = json_decode(file_get_contents("php://input"), true);
 
 $username   = trim($data['username'] ?? '');
 $password   = $data['password'] ?? '';
@@ -91,13 +79,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-/* CHECK USER EXISTS */
-$stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+/* USER EXISTS */
+$stmt = $conn->prepare("SELECT id FROM users WHERE username=? OR email=?");
 
 if (!$stmt) {
     ob_clean();
-    echo json_encode(["error" => "Prepare failed", "debug" => $conn->error]);
-    exit;		
+    echo json_encode([
+        "error" => "Prepare failed",
+        "debug" => $conn->error
+    ]);
+    exit;
 }
 
 $stmt->bind_param("ss", $username, $email);
@@ -112,93 +103,114 @@ if ($stmt->num_rows > 0) {
 
 $stmt->close();
 
-/*  HASH PASSWORD */
+/* HASH */
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 /* TOKEN */
 $verify_token = bin2hex(random_bytes(32));
 
-/* INSERT USER */
+/* INSERT */
 $stmt = $conn->prepare("
-INSERT INTO users (username, password, email, verification_token, verify_expires, is_verified) 
-VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR), 0)
+INSERT INTO users
+(username,password,email,verification_token,verify_expires,is_verified)
+VALUES
+(?,?,?, ?, DATE_ADD(NOW(),INTERVAL 1 HOUR),0)
 ");
 
 if (!$stmt) {
     ob_clean();
-    echo json_encode(["error" => "Insert prepare failed", "debug" => $conn->error]);
+    echo json_encode([
+        "error" => "Insert prepare failed",
+        "debug" => $conn->error
+    ]);
     exit;
 }
 
-$stmt->bind_param("ssss", $username, $hashed_password, $email, $verify_token);
+$stmt->bind_param(
+    "ssss",
+    $username,
+    $hashed_password,
+    $email,
+    $verify_token
+);
 
 if (!$stmt->execute()) {
     ob_clean();
-    echo json_encode(["error" => "Execute failed", "debug" => $stmt->error]);
+    echo json_encode([
+        "error" => "Execute failed",
+        "debug" => $stmt->error
+    ]);
     exit;
 }
 
-/* SEND EMAIL */
-$verify_link = "https://nireas.iee.ihu.gr/asksql/html/verify.html?token=" . $verify_token;
-
-if(empty($_ENV['SMTP_USER']) || empty($_ENV['SMTP_PASS'])){
-ob_clean();
-echo json_encode([
-"error" => "SMTP ENV NOT LOADED",
-"smtp_user" => $_ENV['SMTP_USER']??null,
-"smtp_pass_exists" => isset($_ENV['SMTP_PASS'])
-]);
-exit;
+/* SMTP */
+if (
+    empty($_ENV['SMTP_USER']) ||
+    empty($_ENV['SMTP_PASS'])
+) {
+    ob_clean();
+    echo json_encode([
+        "error" => "SMTP ENV NOT LOADED",
+        "smtp_user" => $_ENV['SMTP_USER'] ?? null,
+        "smtp_pass_exists" => isset($_ENV['SMTP_PASS'])
+    ]);
+    exit;
 }
 
+/* VERIFY LINK */
+$verify_link =
+"https://nireas.iee.ihu.gr/asksql/html/verify.html?token=" .
+$verify_token;
 
-
-
-
-
-
-
-
-
+/* SEND EMAIL */
 $mail = new PHPMailer(true);
 
 try {
+
     $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
+    $mail->Host = "smtp.gmail.com";
     $mail->SMTPAuth = true;
     $mail->Username = $_ENV['SMTP_USER'];
     $mail->Password = $_ENV['SMTP_PASS'];
-    $mail->SMTPSecure = 'tls';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
 
-    $mail->setFrom('margaritadelegiannide@gmail.com', 'AskSQL studio');
+    $mail->setFrom(
+        $_ENV['SMTP_USER'],
+        "AskSQL Studio"
+    );
+
     $mail->addAddress($email, $username);
 
     $mail->isHTML(true);
-    $mail->Subject = 'Verify your account';
+    $mail->Subject = "Verify your account";
 
     $mail->Body = "
-        <h3>Hello $username</h3>
-        <p>Click below to verify your account:</p>
-        <a href='$verify_link'>$verify_link</a>
-        <p>This link expires in 1 hour.</p>
+    <h3>Hello {$username}</h3>
+    <p>Click below to verify your account:</p>
+    <p><a href='{$verify_link}'>Verify account</a></p>
+    <p>This link expires in 1 hour.</p>
     ";
 
     $mail->send();
 
 } catch (Exception $e) {
+
     ob_clean();
+
     echo json_encode([
         "error" => "Email failed",
         "debug" => $mail->ErrorInfo
     ]);
+
     exit;
 }
 
-/* SUCCESS */
 ob_clean();
+
 echo json_encode([
     "success" => true,
     "message" => "Check your email to verify your account"
 ]);
+
 exit;
