@@ -34,9 +34,16 @@ form.addEventListener("submit", async function(e) {
     })
 });
 
-        if (!res.ok) throw new Error("Server error");
+        const text = await res.text();
 
-        const data = await res.json();
+console.log(text);
+
+if (!res.ok) {
+    showMessage(text, "danger");
+    return;
+}
+
+const data = JSON.parse(text);
 
         if (data.success) {
 
