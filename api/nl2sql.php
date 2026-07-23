@@ -242,8 +242,7 @@ $payload = [
 
         [
             "role" => "system",
-            "content" =>
-                "You generate SQL only."
+            "content" => "You generate SQL only."
         ],
 
         [
