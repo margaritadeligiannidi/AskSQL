@@ -146,17 +146,28 @@ function isVeryDangerous(query) {
 
 
 /*  UI RESET  */ 
-function clearUI() { 
-    document.querySelector("#resultsTable thead").innerHTML = "";
-    document.querySelector("#resultsTable tbody").innerHTML = "";
+function clearResultsOnly() {
+    const thead = document.querySelector("#resultsTable thead");
+    const tbody = document.querySelector("#resultsTable tbody");
 
-    document.getElementById("generatedSQL").textContent = "";
-    document.getElementById("queryInput").value = "";
+    if (thead) thead.innerHTML = "";
+    if (tbody) tbody.innerHTML = "";
+
+    const generated = document.getElementById("generatedSQL");
+    if (generated) generated.textContent = "";
+
+    currentPage = 1;
+    hasNextPage = false;
+}
+
+function clearUI() {
+    clearResultsOnly();
+
+    const input = document.getElementById("queryInput");
+    if (input) input.value = "";
 
     lastQuery = "";
     lastGeneratedSQL = "";
-    currentPage = 1;
-    hasNextPage = false; // <-- ΠΡΟΣΘΗΚΗ
 } 
 
 
@@ -354,14 +365,21 @@ async function handleQuery() {
 
     const runBtn = document.getElementById("runBtn");
 
-        if (mode === "nl") {
-          runBtn.innerHTML = ` <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            Thinking...`;
-        } else {
-           runBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"
-                                 role="status"></span>
-                                 Running`;
-        }
+    if (mode === "nl") {
+        const generated = document.getElementById("generatedSQL");
+        if (generated) generated.textContent = "";
+    } else {
+        clearResultsOnly();
+    }
+
+    if (mode === "nl") {
+      runBtn.innerHTML = ` <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Thinking...`;
+    } else {
+       runBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"
+                             role="status"></span>
+                             Running`;
+    }
 
     runBtn.disabled = true;
 
@@ -463,6 +481,7 @@ async function runSQL(
             && !confirmed
         ) {
 
+            resetRunButtonState();
             handleDangerousExecution(
                 sql,
                 originalQuestion
@@ -613,7 +632,24 @@ async function runNL(question) {
 
         } else {
 
-            output.textContent = "Error generating SQL";
+            const isMultipleQueryError =
+                typeof data?.error === "string" &&
+                (/multiple/i.test(data.error) ||
+                    /single SQL query/i.test(data.error) ||
+                    /rephrase your question/i.test(data.error));
+
+            const message = isMultipleQueryError
+                ? "Your request cannot be processed as a single SQL query.\nPlease rephrase your question more specifically."
+                : "Error generating SQL";
+
+            output.textContent = message;
+
+            if (isMultipleQueryError) {
+                showErrorModal(
+                    "Your request cannot be processed as a single SQL query.\nPlease rephrase your question more specifically.",
+                    "validation"
+                );
+            }
         }
 
     } catch (e) {
@@ -804,6 +840,30 @@ function getCellClass(value) {
 
  
 
+function resetRunButtonState() {
+    const runBtn = document.getElementById("runBtn");
+
+    if (runBtn) {
+        const mode = document.getElementById("mode")?.value || "sql";
+
+        runBtn.innerHTML =
+            mode === "sql"
+                ? '<i class="bi bi-play-fill me-1"></i> Run'
+                : '<i class="bi bi-stars me-1"></i> Ask AI';
+
+        runBtn.disabled = false;
+    }
+
+    const runGeneratedBtn = document.getElementById("runGeneratedBtn");
+
+    if (runGeneratedBtn) {
+        runGeneratedBtn.innerHTML =
+            '<i class="bi bi-play-fill"></i>';
+
+        runGeneratedBtn.disabled = false;
+    }
+}
+
 /* DANGER MODAL  */ 
 function handleDangerousExecution(query, originalQuestion = query) { 
 
@@ -813,7 +873,8 @@ function handleDangerousExecution(query, originalQuestion = query) {
     } 
 
  
-    const modal = new bootstrap.Modal(document.getElementById("dangerModal")); 
+    const modalEl = document.getElementById("dangerModal"); 
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl); 
     const text = document.getElementById("dangerText"); 
 
     let message = "This query may modify or delete data."; 
@@ -829,6 +890,20 @@ function handleDangerousExecution(query, originalQuestion = query) {
 
     text.innerText = message; 
 
+    modalEl.setAttribute("data-confirmed", "false");
+
+    const cancelBtn = document.getElementById("cancelDangerBtn");
+    cancelBtn.onclick = () => {
+        modalEl.setAttribute("data-confirmed", "false");
+        resetRunButtonState();
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", function resetDangerModalState() {
+        if (modalEl.getAttribute("data-confirmed") !== "true") {
+            resetRunButtonState();
+        }
+    }, { once: true });
+
     modal.show(); 
 
  
@@ -838,6 +913,7 @@ function handleDangerousExecution(query, originalQuestion = query) {
     const newBtn = document.getElementById("confirmDangerBtn"); 
     newBtn.onclick = () => { 
 
+        modalEl.setAttribute("data-confirmed", "true");
         modal.hide(); 
         runSQL(query, originalQuestion, true); 
 

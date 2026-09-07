@@ -16,14 +16,17 @@ body.page-bg{
 /* ---------------- LAYOUT ---------------- */
 
 .main-container{
+    flex:1 1 auto;
+    min-height:0;
+    height:100%;
     padding:14px;
-    min-height:calc(100vh - 72px);
+    box-sizing:border-box;
 }
 
 .main-container>.row{
-    height:calc(100vh - 100px);
+    height:100%;
+    min-height:0;
 }
-
 /* ---------------- CARDS ---------------- */
 
 .card{
@@ -54,6 +57,12 @@ body.page-bg{
 }
 
 @media (min-width:992px){
+  html,
+    body{
+        height:100%;
+        overflow:hidden;
+    }
+
     #mobileDbList{
         display:flex !important;
         flex-direction:column;
@@ -180,6 +189,15 @@ body.page-bg{
 #generatedSQL{
     border-radius:10px;
     margin-bottom:0;
+    min-height:56px;
+    max-height:180px;
+    resize:vertical;
+    overflow:auto;
+    white-space:pre;
+    overflow-wrap:normal;
+    word-break:normal;
+    font-family:Consolas,monospace;
+    font-size:0.85rem;
 }
 
 #historyBox{

@@ -191,7 +191,23 @@ function cleanSQL($sql)
     return trim($sql);
 }
 
+function hasMultipleStatements($sql)
+{
+    $sql = trim($sql);
 
+    if ($sql === '') {
+        return false;
+    }
+
+    $sql = preg_replace('/--.*?$/m', '', $sql);
+    $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
+    $sql = preg_replace('/;\s*$/', '', $sql);
+
+    return (bool) preg_match(
+        '/;\s*(?:SELECT|INSERT|UPDATE|DELETE|WITH|CREATE|ALTER|DROP|SHOW|SET|CALL|EXPLAIN|PRAGMA)\b/i',
+        $sql
+    );
+}
 
 
 
@@ -315,13 +331,13 @@ $totalTokens =
     }
 
     if (
-        substr_count($sql, ';') > 0
+        hasMultipleStatements($sql)
     ) {
 
         echo json_encode([
             "success" => false,
             "error" =>
-                "Multiple queries are not allowed"
+                "Your request cannot be processed as a single SQL query. Please rephrase your question more specifically."
         ]);
 
         exit;

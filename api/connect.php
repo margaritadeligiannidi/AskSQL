@@ -217,29 +217,28 @@ if ((int)$useSSH === 1) {
 
 // CONNECT PDO 
 try {
-    if ($type === 'mysql') {
-            // If database is empty, connect without specifying a database
-        if (!empty($database)) {
+  if ($type === 'mysql') {
+     // If database is empty, connect without specifying a database
+    if (!empty($database)) {
 
-            $dsn = "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4";
-
-        } else {
-
-            $dsn = "mysql:host=$host;port=$port;charset=utf8mb4";
-        }
+     $dsn = "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4";
 
     } else {
 
-        if (empty($database)) {
+     $dsn = "mysql:host=$host;port=$port;charset=utf8mb4";
+    }
+    } else {
 
-            echo json_encode([
-                "error" => "Database name is required for PostgreSQL"
-            ]);
+     if (empty($database)) {
 
-            exit;
-        }
+       echo json_encode([
+       "error" => "Database name is required for PostgreSQL"
+      ]);
 
-        $dsn = "pgsql:host=$host;port=$port;dbname=$database;options='--client_encoding=UTF8'";
+      exit;
+      }
+
+     $dsn = "pgsql:host=$host;port=$port;dbname=$database;options='--client_encoding=UTF8'";
     }
 
     $pdo = new PDO(
@@ -247,17 +246,16 @@ try {
         $username,
         $password,
         [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+          PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]
     );
-
 } catch (Exception $e) {
 
-    echo json_encode([
-        "error" => "Connection failed"
-    ]);
+   echo json_encode([
+    "error" => "Connection failed"
+   ]);
 
-    exit;
+  exit;
 }
 
 /* SAVE CONNECTION (ONLY NEW) */
