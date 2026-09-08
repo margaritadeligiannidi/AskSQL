@@ -185,8 +185,6 @@ Depending on the features you want to use, you may also need to configure:
 - Google OAuth credentials
 - Application URL and other environment-specific settings
 
-> **Important:** Never commit your `.env` file, API keys, passwords, or other sensitive credentials to a public repository.
-
 ---
 
 ## 5. Configure your web server
