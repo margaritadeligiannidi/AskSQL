@@ -4,15 +4,13 @@ AskSQL is an open-source web application that enables users to interact with rel
 
 The application uses Large Language Models (LLMs) to convert natural language questions into SQL queries, making database querying more accessible to users with limited SQL knowledge.
 
-AskSQL supports MySQL and PostgreSQL databases through direct TCP/IP connections and SSH tunneling.
-
 ---
 
 ## Features
 
 - Natural Language to SQL conversion using AI models
-- Support for multiple LLM providers
 - Direct SQL query execution
+- Support for multiple LLM providers
 - MySQL and PostgreSQL support
 - TCP/IP and SSH tunnel connections
 - Database schema and table exploration
@@ -189,17 +187,16 @@ Depending on the features you want to use, you may also need to configure:
 
 ## 5. Configure your web server
 
-Configure a web server such as Apache or Nginx to serve the application.
+Configure a web server such as Apache to serve the application.
 
 Make sure that:
 
 - PHP is enabled and properly configured.
 - The required PHP extensions are installed.
-- The web server has access to the application files.
 - MySQL and/or PostgreSQL support is enabled.
 - Required utilities such as `mysqldump` and `pg_dump` are available if schema extraction is used.
 
-After configuring your web server, open the application in your browser using the configured server URL.
+
 
 
 ---
