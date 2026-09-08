@@ -79,7 +79,7 @@ To enable email functionality, you must configure an SMTP account and generate a
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/AskSQL.git
+git clone https://github.com/margaritadeligiannidi/AskSQL.git
 cd AskSQL
 ```
 
